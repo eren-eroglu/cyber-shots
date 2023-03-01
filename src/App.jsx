@@ -1,34 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import { FaSearch } from "react-icons/fa";
+import Photo from "./Photo";
 
-function App() {
-  const [count, setCount] = useState(0)
+const mainUrl = `https://api.unsplash.com/photos/`;
+const searchUrl = `https://api.unsplash.com/search/photos/`;
+const accessKey = import.meta.env.VITE_REACT_APP_ACCESS_KEY;
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Init test deployment build</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
-  )
-}
+const App = () => {
+  const [loading, setLoading] = useState(false);
+  const [photos, setPhotos] = useState([]);
 
-export default App
+  const fetchImages = async () => {
+    setLoading(true);
+    let url;
+    url = `${mainUrl}?client_id=${accessKey}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchImages();
+  }, []);
+  return <h2>stock photos starter</h2>;
+};
+
+export default App;
